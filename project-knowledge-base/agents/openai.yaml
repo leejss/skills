@@ -1,0 +1,7 @@
+interface:
+  display_name: "Project Knowledge Base"
+  short_description: "Maintain a project-specific knowledge base"
+  default_prompt: "Use $project-knowledge-base to capture this task and update the project knowledge base."
+
+policy:
+  allow_implicit_invocation: true
