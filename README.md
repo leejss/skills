@@ -1,6 +1,8 @@
 # Agent Skills
 
-[![skills.sh](https://skills.sh/b/leejss/skills)](https://skills.sh/leejss/skills)
+[![recap on skills.sh](https://img.shields.io/badge/skills.sh-recap-111827)](https://skills.sh/leejss/skills/recap)
+[![think-it-through on skills.sh](https://img.shields.io/badge/skills.sh-think--it--through-111827)](https://skills.sh/leejss/skills/think-it-through)
+[![tracer-bullet on skills.sh](https://img.shields.io/badge/skills.sh-tracer--bullet-111827)](https://skills.sh/leejss/skills/tracer-bullet)
 
 Reusable agent workflows for focused thinking, durable conversation records, and verified end-to-end exploration.
 
