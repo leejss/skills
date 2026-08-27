@@ -1,0 +1,6 @@
+interface:
+  display_name: "Code Lore"
+  short_description: "Extract project-agnostic knowledge from code"
+  default_prompt: "Use $code-lore to turn this code into project-agnostic, source-backed knowledge."
+policy:
+  allow_implicit_invocation: false
