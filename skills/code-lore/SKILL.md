@@ -1,6 +1,6 @@
 ---
 name: code-lore
-description: Turn selected code into project-agnostic, source-backed knowledge. Use when the user explicitly invokes $code-lore to uncover transferable concepts, principles, constraints, tradeoffs, or failure modes represented by code. Do not use for runtime call tracing, project documentation, or ordinary code review.
+description: Turn selected code into a persistent, project-agnostic, source-backed technical article. Use when the user explicitly invokes $code-lore to uncover transferable concepts, principles, constraints, tradeoffs, or failure modes represented by code. Do not use for runtime call tracing, project documentation, or ordinary code review.
 ---
 
 # Code Lore
@@ -51,7 +51,7 @@ For each candidate, show:
 
 Use relationship labels that convey meaning, such as `requires`, `protects`, `guarantees`, `trades off`, `fails when`, or `specializes`. Prefer a small, ranked map over an exhaustive taxonomy.
 
-Then stop and let the user choose a topic. Do not silently select one, perform broad external research, or write the full knowledge document in the same turn.
+Then stop and let the user choose a topic. Do not silently select one, perform broad external research, or write the full knowledge document in the same turn. The provisional map may remain conversational because it is a selection aid rather than the final artifact; save it only when the user explicitly requests that intermediate result.
 
 When the invocation already names a clear topic, skip the selection pause and proceed directly to research and synthesis. Still construct the relevant conceptual relationships as part of the result.
 
@@ -86,7 +86,7 @@ Write the main explanation in project-agnostic terms. Make the knowledge useful 
 
 Adapt the organization to the topic instead of filling a rigid template. Include a compact Knowledge Map when multiple concepts interact and prose alone would hide those relationships.
 
-Keep provenance visible. Distinguish:
+Keep provenance visible in the wording or with lightweight notes, without forcing a status label onto every paragraph. Distinguish:
 
 - **Verified**: directly supported by code evidence or an identified Primary source;
 - **Inferred**: a reasonable interpretation not explicitly established by the evidence;
@@ -102,8 +102,17 @@ Do not imply that the observed implementation is correct, complete, or recommend
 
 ## Deliver proportionally
 
-Default to a conversational Markdown result. Create or modify a file only when the user asks for a persistent artifact or provides an output path.
+Every completed topic must be saved as a Markdown document. Honor an explicit output path or filename. Otherwise:
 
-For a completed topic, lead with the distilled insight rather than the research process. Include the most useful supporting sources near the claims they support, a compact source list for further reading, the optional implementation appendix, and unresolved questions that could materially change the interpretation.
+1. Resolve the writable workspace root that contains the inspected code. Ask only when multiple roots are genuinely plausible.
+2. Create `docs/lore/` under that root when it does not exist.
+3. Derive a concise, readable topic slug and write `docs/lore/<topic-slug>.md`.
+4. If that filename already exists, do not overwrite it implicitly. Append `-2`, `-3`, and so on unless the user explicitly asks to update the existing document.
 
-Stop when the selected topic is explained with enough evidence to be safely reused. Recommend adjacent topics when useful, but do not expand into them without the user's request.
+Write in the user's language unless another language is requested. Use a technical-blog style: begin from the problem or surprising insight, develop the underlying idea as a coherent narrative, and use concrete examples where they improve understanding. Let headings follow the argument instead of filling a fixed template. Do not mechanically emit metadata tables, status matrices, exhaustive checklists, or one section per possible field.
+
+Lead with the distilled insight rather than the research process. Weave Primary sources into the claims they support and collect only the most useful references at the end. Express uncertainty naturally and explicitly. Include a diagram, compact Knowledge Map, code excerpt, implementation note, or unresolved question only when it materially improves the explanation. Keep the main article independent of the originating project.
+
+After writing, report the created file path and briefly state what knowledge it captures and any important evidence limitation. Do not duplicate the entire document in the conversational response.
+
+Stop when the selected topic is explained with enough evidence to be safely reused and the document has been written successfully. Recommend adjacent topics when useful, but do not expand into them without the user's request.
