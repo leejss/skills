@@ -1,0 +1,7 @@
+interface:
+  display_name: "Code Primer"
+  short_description: "Build prerequisite learning paths for selected code"
+  default_prompt: "Use $code-primer to build and save the prerequisite learning path for this selected code."
+
+policy:
+  allow_implicit_invocation: true
