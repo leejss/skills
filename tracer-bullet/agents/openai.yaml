@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tracer Bullet"
+  short_description: "Trace or build one verified end-to-end path"
+  default_prompt: "Use $tracer-bullet to trace or build the smallest end-to-end path that resolves the key uncertainty."

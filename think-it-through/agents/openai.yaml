@@ -1,0 +1,7 @@
+interface:
+  display_name: "Think It Through"
+  short_description: "Clarify an idea through focused, opinionated dialogue"
+  default_prompt: "Use $think-it-through to help me clarify this idea through conversation."
+
+policy:
+  allow_implicit_invocation: false

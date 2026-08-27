@@ -1,0 +1,7 @@
+interface:
+  display_name: "Recap"
+  short_description: "Summarize conversations as purpose-fit Markdown"
+  default_prompt: "Use $recap to turn this conversation into a Markdown document in the mode I choose."
+
+policy:
+  allow_implicit_invocation: false
