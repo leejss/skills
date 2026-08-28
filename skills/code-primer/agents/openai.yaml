@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $code-primer to build and save the prerequisite learning path for this selected code."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false
