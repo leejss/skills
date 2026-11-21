@@ -6,75 +6,69 @@ disable-model-invocation: true
 
 # Gatekeeper
 
-The main agent owns scope, design decisions, result assessment, code quality
-review, and integration. Use the configured models for the main agent and
-subagents.
+The main agent orchestrates the work and decides what passes each gate. It
+owns scope, design decisions, result assessment, and integration decisions.
+Subagents execute all work units, including discovery, source and document
+reads, implementation, verification, and any integration actions. This
+applies to small tasks and work spanning components or repositories. The main
+agent bases decisions on the user-provided context and evidence returned by
+subagents. Use the configured models for the main agent and subagents.
 
 ## Gates
 
-Identify the work units needed to complete the request and apply the Decision
-Gate to each one. Give each unit one owner, either the main agent or a subagent.
-Reassess verification execution when the checks and their prerequisites are
-known. Once the owners return their results and evidence, the main agent applies
-the Verification Gate and Quality Gate before integration.
-
 ### Decision Gate
 
-Evaluate investigation, implementation, and verification execution separately.
-Use a brief initial inventory to define work boundaries and assign ownership
-for cross-component decisions. Group work by user flow or behavior when it spans
-files or layers. Give related callers, services, and tests to the same owner
-when they need to be understood together.
+Assign each work unit to one subagent with the needed tools. Use the context
+already supplied to set boundaries. If boundaries or prerequisites are unclear,
+delegate discovery first. Group related callers, services, and tests when they
+need to be understood together. For work spanning repositories, coordinate
+dependencies across owners and assign an owner for any shared investigation or
+end-to-end check. Run independent units in parallel when practical.
 
-Delegate a work unit when all three conditions hold:
-
-- A subagent with the required tools can execute it from a self-contained handoff.
-- The main agent can define the work unit's Definition of Done (DoD).
-- Parallel execution or reduced context use justifies the handoff and review cost.
-
-Handle small, low-output work directly. Run independent delegated units in
-parallel when practical.
-
-Keep investigation, execution, and evidence collection with the assigned owner.
-While a delegated unit is in progress, the main agent works on a separate unit
-it owns or waits for the delegated unit's evidence. If a decision is blocked,
-ask the owner for the specific interim evidence needed. Run a direct check
-within the delegated scope only when the decision cannot wait for the owner.
-Limit that check to the smallest relevant excerpt or command. Reassign ownership
-explicitly if the owner cannot finish the unit.
+While owners work, coordinate dependencies, review returned evidence, or wait.
+For missing evidence, corrections, or a time-sensitive decision, give the owner
+a specific follow-up and ask for the relevant excerpt, diff, or interim result.
+If the owner cannot finish, explicitly reassign the unit to a capable subagent.
+If no subagent can perform the work, report the affected scope and the blocker
+or missing capability. Continue with independent units that can proceed.
 
 ### Verification Gate
 
-Treat verification execution as its own work unit. Delegate it when the checks
-can be specified in a handoff and require repeated simulator runs, lengthy builds
-or test suites, or substantial log analysis. Apply this rule even when the main
-agent implements the change.
+Assign verification as its own work unit once the checks and prerequisites are
+known. The implementation owner may also own verification when appropriate.
 
 The verification owner runs the checks, diagnoses failures, retries when needed,
 and returns the results with evidence. The main agent assesses the owner's
 report against the work unit's DoD and decides which completion criteria have
 been met.
 
-Inspect the cited evidence for consequential, conflicting, or unsupported claims.
-Route additional investigation and verification runs to the owner with a specific
-question or missing criterion. Report any criteria that remain unverified.
+Use the returned evidence to assess consequential or conflicting claims. Ask
+the owner for the specific evidence needed to resolve unsupported claims.
+Report any criteria that remain unverified.
 
 ### Quality Gate
 
-The main agent reviews the diff for integration, preservation of expected
-behavior, and code quality. For review-only work, assess the reported findings
-against the relevant code and product requirements.
+The main agent reviews the diffs and excerpts returned by the owners for
+integration, preservation of expected behavior, and code quality. For
+review-only work, assess the reported findings against the returned code
+excerpts and relevant product requirements.
 
 Check for unnecessary complexity, excessive abstraction, and speculative
 features or extension points (YAGNI). Judge readability from a human
 maintainer's perspective. Check that control flow is straightforward, failure
 behavior is clear, and variable and function names communicate their purpose.
-Resolve material findings before integration.
+Route material findings to the owner for correction before integration.
+
+If a change after verification could affect an earlier result, the verification
+owner reruns the affected checks on the revised work. Before integration, the
+main agent reassesses the affected completion criteria using the new evidence
+and marks any criterion that lacks current evidence as unverified. The main
+agent decides whether the work is ready and delegates any integration actions.
 
 ## Handoff
 
-Start each delegated work unit in a fresh subagent context without copying
-the parent conversation. Pass a self-contained handoff as the initial prompt.
+Start each new subagent in a fresh context without copying the parent
+conversation. Pass a self-contained handoff as the initial prompt.
 
 - In Codex, call `spawn_agent` with `fork_turns: "none"`.
 - In Claude Code, use the `Agent` tool with a non-fork subagent type that has
@@ -90,9 +84,10 @@ source references. In every handoff, state the work unit's Definition of Done
 Keep the DoD proportional to the work. For investigation, specify what to
 examine and what evidence to provide for any findings.
 
-Request a concise report against the DoD. Include changed file paths where
-relevant, checks run, observed outcomes, unresolved items, and evidence
-locations. For each verification scenario, report the expected and observed
-behavior and mark it as passed, failed, or unverified. Identify the test
-environment and any stubs used. Leave full logs and captures at their evidence
-locations for inspection when needed.
+Request a concise report against the DoD. Include relevant paths and line
+references, cited excerpts or diffs needed for gate decisions, checks run,
+observed outcomes, unresolved items, and evidence locations. For each
+verification scenario, report the expected and observed behavior and mark it
+passed, failed, or unverified. Identify the test environment and any stubs used.
+Keep full logs and captures at their evidence locations so the owner can
+retrieve additional evidence on request.
