@@ -21,9 +21,10 @@ the Verification Gate and Quality Gate before integration.
 ### Decision Gate
 
 Evaluate investigation, implementation, and verification execution separately.
-Group work by user flow or behavior when it spans files or layers. Give related
-callers, services, and tests to the same owner when they need to be understood
-together.
+Use a brief initial inventory to define work boundaries and assign ownership
+for cross-component decisions. Group work by user flow or behavior when it spans
+files or layers. Give related callers, services, and tests to the same owner
+when they need to be understood together.
 
 Delegate a work unit when all three conditions hold:
 
@@ -34,9 +35,13 @@ Delegate a work unit when all three conditions hold:
 Handle small, low-output work directly. Run independent delegated units in
 parallel when practical.
 
-Keep execution and evidence collection with the assigned owner. Route follow-up
-checks to that owner. The main agent reads enough to scope the work, review the
-diff, and inspect evidence needed for a decision.
+Keep investigation, execution, and evidence collection with the assigned owner.
+While a delegated unit is in progress, the main agent works on a separate unit
+it owns or waits for the delegated unit's evidence. If a decision is blocked,
+ask the owner for the specific interim evidence needed. Run a direct check
+within the delegated scope only when the decision cannot wait for the owner.
+Limit that check to the smallest relevant excerpt or command. Reassign ownership
+explicitly if the owner cannot finish the unit.
 
 ### Verification Gate
 
@@ -46,12 +51,13 @@ or test suites, or substantial log analysis. Apply this rule even when the main
 agent implements the change.
 
 The verification owner runs the checks, diagnoses failures, retries when needed,
-and returns the results with evidence. The main agent uses the evidence to decide
-which of the work unit's completion criteria have been met.
+and returns the results with evidence. The main agent assesses the owner's
+report against the work unit's DoD and decides which completion criteria have
+been met.
 
-Request a targeted follow-up when evidence is missing or ambiguous. Use focused
-direct checks when a decision requires inspection or delegation is unavailable.
-Report any criteria that remain unverified.
+Inspect the cited evidence for consequential, conflicting, or unsupported claims.
+Route additional investigation and verification runs to the owner with a specific
+question or missing criterion. Report any criteria that remain unverified.
 
 ### Quality Gate
 
