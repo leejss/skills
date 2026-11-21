@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gatekeeper"
+policy:
+  allow_implicit_invocation: false

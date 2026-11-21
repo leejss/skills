@@ -10,6 +10,7 @@ Reusable agent workflows for focused thinking, code understanding, durable knowl
 | --- | --- |
 | `code-lore` | Extract project-agnostic, source-backed knowledge from selected code. |
 | `code-primer` | Build and save prerequisite learning paths for understanding selected code. |
+| `gatekeeper` | Decide which work to delegate and assess the results before integration. |
 | `recap` | Turn a conversation into a focused learning, project, handoff, or archive document. |
 | `think-it-through` | Clarify a vague request through focused, opinionated dialogue. |
 | `tracer-bullet` | Trace or build the smallest verified end-to-end path that resolves a key uncertainty. |
@@ -34,7 +35,9 @@ Install every skill globally for Codex:
 npx skills add leejss/skills --skill '*' --agent codex --global
 ```
 
-Replace `recap` with `code-lore`, `code-primer`, `think-it-through`, or `tracer-bullet` to install a different skill.
+Replace `recap` with another skill name from the table to install a different skill.
+
+Gatekeeper requires explicit invocation with `$gatekeeper` in Codex or `/gatekeeper` in Claude Code.
 
 ## Update
 
